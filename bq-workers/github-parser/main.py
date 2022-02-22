@@ -76,10 +76,7 @@ def process_github_event(headers, msg):
     if "Mock" in headers:
         source += "mock"
 
-    types = {"push", "pull_request", "pull_request_review",
-             "pull_request_review_comment", "issues",
-             "issue_comment", "check_run", "check_suite", "status",
-             "deployment_status", "release"}
+    types = {"push"}
 
     if event_type not in types:
         raise Exception("Unsupported GitHub event: '%s'" % event_type)
