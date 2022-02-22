@@ -83,6 +83,17 @@ def simple_token_verification(token, body):
 
     return secret.decode() == token
 
+def teamcity_verification(token, body):
+    """
+    Verifies that the token received from the event is accurate
+    """
+    if not token:
+        raise Exception("Token is empty")
+
+    secret = get_secret(PROJECT_NAME, "event-handler", "1")
+
+    return f"Bearer {secret.decode()}" == token
+
 
 def get_secret(project_name, secret_name, version_num):
     """
@@ -115,6 +126,9 @@ def get_source(headers):
     if "Circleci-Event-Type" in headers:
         return "circleci"
 
+    if "X-Tcwebhooks-Request-Id" in headers:
+        return "teamcity"
+
     return headers.get("User-Agent")
 
 
@@ -130,5 +144,8 @@ AUTHORIZED_SOURCES = {
         ),
     "circleci": EventSource(
         "Circleci-Signature", circleci_verification
+        ),
+    "teamcity": EventSource(
+        "Authorization", teamcity_verification
         ),
 }
