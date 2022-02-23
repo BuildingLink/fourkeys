@@ -6,11 +6,6 @@
   },
   {
     "mode": "NULLABLE",
-    "name": "project",
-    "type": "STRING"
-  },
-  {
-    "mode": "NULLABLE",
     "name": "id",
     "type": "STRING"
   },
